@@ -1,27 +1,32 @@
 package com.zoeyoung.audiovideoprimer;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
+import android.support.v7.app.AppCompatActivity;
 
-import com.zoeyoung.audiovideoprimer.task1.DrawBitmapActivity;
+import com.jakewharton.rxbinding2.view.RxView;
+import com.zoeyoung.audiovideoprimer.task1.surface.AnimateViewActivity;
+
+import io.reactivex.disposables.CompositeDisposable;
 
 public class MainActivity extends AppCompatActivity {
+
+    private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button drawBitmapActivityBtn = (Button) findViewById(R.id.draw_bitmap_activity_btn);
-        drawBitmapActivityBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, DrawBitmapActivity.class);
-                startActivity(intent);
-            }
-        });
+        mCompositeDisposable.add(RxView.clicks(findViewById(R.id.task_1_tv)).subscribe(v -> {
+            Intent intent = new Intent(MainActivity.this, AnimateViewActivity.class);
+            startActivity(intent);
+        }));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mCompositeDisposable.clear();
     }
 }

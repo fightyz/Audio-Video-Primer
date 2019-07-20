@@ -1,7 +1,6 @@
 package com.zoeyoung.audiovideoprimer.task1;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
@@ -15,6 +14,9 @@ import com.zoeyoung.audiovideoprimer.R;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 1. 在 Android 平台绘制一张图片，使用至少 3 种不同的 API，ImageView，SurfaceView，自定义 View
+ */
 public class DrawBitmapActivity extends Activity {
 
     private ViewPager viewPager;
@@ -23,6 +25,7 @@ public class DrawBitmapActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         BitmapSurfaceView bitmapSurfaceView = new BitmapSurfaceView(this);
 
         ImageView bitmapImageView = new ImageView(this);
