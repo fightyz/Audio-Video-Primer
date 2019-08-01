@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PixelFormat;
+import android.graphics.PorterDuff;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -29,6 +31,8 @@ public class DemoSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         SurfaceHolder holder = getHolder();
         holder.addCallback(this);
         mThread = new LoopThread(holder, getContext());
+//        setZOrderOnTop(true);
+//        getHolder().setFormat(PixelFormat.TRANSLUCENT);
     }
 
     @Override
@@ -36,14 +40,18 @@ public class DemoSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         Log.i(TAG, "surfaceCreated");
         mThread.isRunning = true;
         mThread.start();
+//        setZOrderOnTop(true);
+//        getHolder().setFormat(PixelFormat.TRANSLUCENT);
     }
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+        Log.i(TAG, "surfaceChanged format " + format + ", width " + width + ", height " + height);
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
+        Log.i(TAG, "surfaceDestroyed");
         mThread.isRunning = false;
         try {
             mThread.join();
@@ -75,23 +83,25 @@ public class DemoSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             Canvas c = null;
             while (isRunning) {
                 synchronized (mSurfaceHolder) {
-                    try {
-                        c = mSurfaceHolder.lockCanvas(null);
-                        doDraw(c);
-//                        Thread.sleep(1);
-                    }
-//                    catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-                    finally {
-                        mSurfaceHolder.unlockCanvasAndPost(c);
+                    if (mSurfaceHolder.getSurface().isValid()) {
+                        try {
+                            c = mSurfaceHolder.lockCanvas(null);
+                            if (c != null) {
+                                doDraw(c);
+                            }
+                        } finally {
+                            if (c != null) {
+                                mSurfaceHolder.unlockCanvasAndPost(c);
+                            }
+                        }
                     }
                 }
             }
         }
 
         public void doDraw(Canvas c) {
-            c.drawColor(Color.WHITE);
+            c.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+//            c.drawColor(Color.WHITE);
             c.translate(200, 200);
             c.drawCircle(0, 0, radius++, mPaint);
             if (radius > 100) {
