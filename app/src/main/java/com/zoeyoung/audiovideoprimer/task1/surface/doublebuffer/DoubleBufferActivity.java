@@ -14,6 +14,7 @@ import com.zoeyoung.audiovideoprimer.util.AudioVideoPrimerLog;
  */
 public class DoubleBufferActivity extends AppCompatActivity {
     private static final String TAG = "DoubleBufferActivity";
+    DoubleBufferFlashSurfaceView mDoubleBufferFlashSurfaceView;
     DoubleBufferSurfaceView mDoubleBufferSurfaceView;
 
     @Override
@@ -27,14 +28,12 @@ public class DoubleBufferActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         AudioVideoPrimerLog.i(TAG, "onResume");
-        mDoubleBufferSurfaceView.DoubleBufferSurfaceViewOnResume();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         AudioVideoPrimerLog.i(TAG, "onPause");
-        mDoubleBufferSurfaceView.DoubleBufferSurfaceViewOnPause();
     }
 
     @Override

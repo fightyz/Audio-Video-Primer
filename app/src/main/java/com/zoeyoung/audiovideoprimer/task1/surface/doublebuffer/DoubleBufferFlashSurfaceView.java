@@ -1,9 +1,7 @@
 package com.zoeyoung.audiovideoprimer.task1.surface.doublebuffer;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
@@ -19,56 +17,36 @@ import java.util.Random;
  * @author joe.yang@dji.com
  * @date 2019-08-03 12:34
  */
-public class DoubleBufferSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
+public class DoubleBufferFlashSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
 
     private static final String TAG = "DoubleBufferSurfaceView";
     private SurfaceHolder mSurfaceHolder;
     private DoubleBufferThread mDoubleBufferThread;
     private Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private Random mRandom;
-    private int mCanvasWidth;
-    private int mCanvasHeight;
-    private Bitmap mBitmap;
-    private Canvas mCanvas;
-    private Matrix identityMatrix;
 
-    public DoubleBufferSurfaceView(Context context) {
+    public DoubleBufferFlashSurfaceView(Context context) {
         super(context);
     }
 
-    public DoubleBufferSurfaceView(Context context, AttributeSet attrs) {
+    public DoubleBufferFlashSurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public DoubleBufferSurfaceView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public DoubleBufferFlashSurfaceView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        AudioVideoPrimerLog.i(TAG, "onAttachedToWindow");
         mSurfaceHolder = getHolder();
         mSurfaceHolder.addCallback(this);
     }
 
     @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        AudioVideoPrimerLog.i(TAG, "onDetachedFromWindow");
-        mSurfaceHolder.removeCallback(this);
-    }
-
-    @Override
     public void surfaceCreated(SurfaceHolder holder) {
         AudioVideoPrimerLog.i(TAG, "surfaceCreated");
-        mCanvasWidth = getWidth();
-        mCanvasHeight = getHeight();
-        mBitmap = Bitmap.createBitmap(mCanvasWidth, mCanvasHeight, Bitmap.Config.ARGB_8888);
-        mCanvas = new Canvas();
-        mCanvas.setBitmap(mBitmap);
-        identityMatrix = new Matrix();
-
         mRandom = new Random();
         mDoubleBufferThread = new DoubleBufferThread(this, 500);
         mDoubleBufferThread.setRunning(true);
@@ -83,7 +61,6 @@ public class DoubleBufferSurfaceView extends SurfaceView implements SurfaceHolde
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         AudioVideoPrimerLog.i(TAG, "surfaceDestroyed");
-
         boolean retry = true;
         mDoubleBufferThread.setRunning(false);
         while (retry) {
@@ -108,9 +85,7 @@ public class DoubleBufferSurfaceView extends SurfaceView implements SurfaceHolde
         int g = mRandom.nextInt(255);
         int b = mRandom.nextInt(255);
         mPaint.setColor(0xff000000 + (r << 16) + (g << 8) + b);
-
-        mCanvas.drawCircle(x, y, 10, mPaint);
-        canvas.drawBitmap(mBitmap, identityMatrix, null);
+        canvas.drawCircle(x, y, 10, mPaint);
     }
 
     public void updateStates() {
