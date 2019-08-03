@@ -3,8 +3,10 @@ package com.zoeyoung.audiovideoprimer.task1.surface.doublebuffer;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -99,6 +101,10 @@ public class DoubleBufferSurfaceView extends SurfaceView implements SurfaceHolde
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        AudioVideoPrimerLog.i(TAG, "onDraw");
+    }
+
+    private void drawContent(Canvas canvas) {
         mPaint.setStyle(Paint.Style.STROKE);
         int w = canvas.getWidth();
         int h = canvas.getHeight();
@@ -110,6 +116,7 @@ public class DoubleBufferSurfaceView extends SurfaceView implements SurfaceHolde
         mPaint.setColor(0xff000000 + (r << 16) + (g << 8) + b);
 
         mCanvas.drawCircle(x, y, 10, mPaint);
+        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
         canvas.drawBitmap(mBitmap, identityMatrix, null);
     }
 
@@ -126,7 +133,7 @@ public class DoubleBufferSurfaceView extends SurfaceView implements SurfaceHolde
                 canvas = mSurfaceHolder.lockCanvas();
                 if (canvas != null) {
                     updateStates();
-                    onDraw(canvas);
+                    drawContent(canvas);
                 }
             } finally {
                 if (canvas != null) {
