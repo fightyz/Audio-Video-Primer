@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.jakewharton.rxbinding2.view.RxView;
-import com.zoeyoung.audiovideoprimer.task1.surface.AnimateViewActivity;
+import com.zoeyoung.audiovideoprimer.task1.surface.doublebuffer.DoubleBufferActivity;
 
 import io.reactivex.disposables.CompositeDisposable;
 
@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mCompositeDisposable.add(RxView.clicks(findViewById(R.id.task_1_tv)).subscribe(v -> {
-            Intent intent = new Intent(MainActivity.this, AnimateViewActivity.class);
+            Intent intent = new Intent(MainActivity.this, DoubleBufferActivity.class);
             startActivity(intent);
         }));
     }

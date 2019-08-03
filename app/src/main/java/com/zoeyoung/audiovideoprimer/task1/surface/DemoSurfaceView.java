@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -69,6 +68,7 @@ public class DemoSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         boolean isRunning;
         float radius = 10f;
         Paint mPaint;
+        long lastSystemTime;
 
         public LoopThread(SurfaceHolder surfaceHolder, Context context) {
             mSurfaceHolder = surfaceHolder;
@@ -100,6 +100,9 @@ public class DemoSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         }
 
         public void doDraw(Canvas c) {
+            long currentTime = System.currentTimeMillis();
+            Log.d(TAG, "doDraw time " + (currentTime - lastSystemTime));
+            lastSystemTime = currentTime;
             c.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
 //            c.drawColor(Color.WHITE);
             c.translate(200, 200);
