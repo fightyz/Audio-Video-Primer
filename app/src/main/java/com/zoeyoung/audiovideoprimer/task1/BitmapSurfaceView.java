@@ -45,30 +45,21 @@ public class BitmapSurfaceView extends SurfaceView implements SurfaceHolder.Call
         bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.lenna);
         threadFlag = true;
 //        thread.start();
-        postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                drawBitmap();
-            }
-        }, 1000);
-//        holder.lockCanvas(new Rect(0, 0, 0, 0));
-//        holder.unlockCanvasAndPost(canvas);
-//
-//        holder.lockCanvas(new Rect(0, 0, 0, 0));
-//        holder.unlockCanvasAndPost(canvas);
-//        drawColor();
+        drawBitmap();
+        // lock - unlock 一次，两块缓冲区做一次 flip，让两块缓冲区中的内容保持一致。
+        // 如果去掉这次 flip 可以看到第一次点击时有黑块（因为 backedBuffer 还没有内容）
+        holder.lockCanvas(new Rect(0, 0, 0, 0));
+        holder.unlockCanvasAndPost(canvas);
         mCompositeDisposable.add(RxView.touches(this)
                 .filter(event -> MotionEvent.ACTION_DOWN == event.getAction())
                 .subscribe(event -> {
                     int x = (int) event.getX();
                     int y = (int) event.getY();
 
-            Canvas canvas = holder.lockCanvas(new Rect(x - 50, y - 50,
-                    x + 50, y + 50));
+                    canvas = holder.lockCanvas(new Rect(x - 50, y - 50,
+                            x + 50, y + 50));
                     Log.i(TAG, "click canvas clipBounds " + canvas.getClipBounds());
 
-//                    Canvas canvas = holder.lockCanvas(new Rect(count * 100, count * 100,
-//                            count * 100 + 100, count * 100 + 100));
                     canvas.save();
                     canvas.rotate(30, x, y);
                     mPaint.setColor(Color.RED);
@@ -80,11 +71,13 @@ public class BitmapSurfaceView extends SurfaceView implements SurfaceHolder.Call
 
                     count++;
 
-//            holder.lockCanvas(new Rect(0, 0, 0, 0));
-//            holder.unlockCanvasAndPost(canvas);
-//
-//            holder.lockCanvas(new Rect(0, 0, 0, 0));
-//            holder.unlockCanvasAndPost(canvas);
+                    // 这里需要做一次 flip，将两个缓冲区的内容同步。如果不同步，则会出现这次点击时的透明角
+                    // 会覆盖上一次所绘制的色块。如果不 delay 100ms，则这次的 flip 可能不会生效，这个可能涉及到
+                    // 底层 flip 的时间间隔，在这个时间间隔内再做 flip 可能不生效
+                    BitmapSurfaceView.this.postDelayed(() -> {
+                        canvas = holder.lockCanvas(new Rect(0, 0, 0, 0));
+                        holder.unlockCanvasAndPost(canvas);
+                    }, 100);
                 }));
     }
 
