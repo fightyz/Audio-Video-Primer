@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/bt_start_record"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Start Record"/>
+
+    <Button
+        android:id="@+id/bt_stop_record"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Stop Record"/>
+
+    <Button
+        android:id="@+id/bt_play_record"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Start Play Record"/>
+
+    <Button
+        android:id="@+id/bt_stop_play_record"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Stop Play Record"/>
+
+    <Button
+        android:id="@+id/bt_pcm2wav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="PCM to WAV"/>
+
+    <Button
+        android:id="@+id/bt_play_wav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Play WAV"/>
+
+    <Button
+        android:id="@+id/bt_pcm2aac"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="PCM to AAC"/>
+
+    <Button
+        android:id="@+id/bt_play_aac"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Play AAC"/>
+
+    <TextView
+        android:id="@+id/tv_encode_process"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Encode Process"/>
+</LinearLayout>

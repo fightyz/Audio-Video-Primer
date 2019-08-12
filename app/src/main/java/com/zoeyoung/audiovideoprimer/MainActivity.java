@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.jakewharton.rxbinding2.view.RxView;
 import com.zoeyoung.audiovideoprimer.task1.DrawBitmapActivity;
+import com.zoeyoung.audiovideoprimer.task2.AudioRecordActivity;
 
 import io.reactivex.disposables.CompositeDisposable;
 
@@ -20,6 +21,10 @@ public class MainActivity extends AppCompatActivity {
 
         mCompositeDisposable.add(RxView.clicks(findViewById(R.id.task_1_tv)).subscribe(v -> {
             Intent intent = new Intent(MainActivity.this, DrawBitmapActivity.class);
+            startActivity(intent);
+        }));
+        mCompositeDisposable.add(RxView.clicks(findViewById(R.id.task_2_tv)).subscribe(v -> {
+            Intent intent = new Intent(MainActivity.this, AudioRecordActivity.class);
             startActivity(intent);
         }));
     }
