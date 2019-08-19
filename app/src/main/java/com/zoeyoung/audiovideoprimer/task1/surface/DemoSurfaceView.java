@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -23,6 +24,11 @@ public class DemoSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     public DemoSurfaceView(Context context) {
         super(context);
+        init();
+    }
+
+    public DemoSurfaceView(Context context, AttributeSet attrs) {
+        super(context, attrs);
         init();
     }
 
@@ -76,6 +82,7 @@ public class DemoSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             mPaint = new Paint();
             mPaint.setColor(Color.BLUE);
             mPaint.setStyle(Paint.Style.STROKE);
+            mPaint.setStrokeWidth(5);
         }
 
         @Override
@@ -101,11 +108,12 @@ public class DemoSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
         public void doDraw(Canvas c) {
             long currentTime = System.currentTimeMillis();
-            Log.d(TAG, "doDraw time " + (currentTime - lastSystemTime));
+//            Log.d(TAG, "doDraw time " + (currentTime - lastSystemTime));
             lastSystemTime = currentTime;
             c.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
 //            c.drawColor(Color.WHITE);
             c.translate(200, 200);
+            c.drawPoint(0, 0, mPaint);
             c.drawCircle(0, 0, radius++, mPaint);
             if (radius > 100) {
                 radius = 10f;

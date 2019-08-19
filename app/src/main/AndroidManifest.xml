@@ -24,6 +24,7 @@
         <activity android:name=".task1.surface.AnimateViewActivity"/>
         <activity android:name=".task1.surface.doublebuffer.DoubleBufferActivity"/>
         <activity android:name=".task2.AudioRecordActivity"/>
+        <activity android:name=".task1.ScaleSurfaceViewActivity"/>
     </application>
 
 </manifest>
